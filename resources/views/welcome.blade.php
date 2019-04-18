@@ -17,7 +17,7 @@
                       <div class="form-group row ">
                         <label for="title" class="col-sm-4 col-form-label text-md-right">Arquivo</label>
                         <div class="col-md-6">
-                            <input type="file" name="file">
+                            <input type="file" name="file" accept=".dat">
                         </div>    
                       </div>
                         <div class="form-group row mb-0">

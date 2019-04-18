@@ -19,3 +19,16 @@ Route::post('process', [
     'as' => 'process',
     'uses' => 'FileController@process'
 ]);
+
+Route::get('processed-data', [
+    'as' => 'processed.data',
+    'uses' => 'FileController@processedData'
+]);
+
+Route::get('view-file/{name}', [
+    'as' => 'processed.data',
+    'uses' => 'FileController@viewFile'
+]);
+
+
+

@@ -10662,3 +10662,12 @@ a.text-dark:focus {
   }
 }
 
+.title-upload-success {
+  margin-top: 200px;
+  text-align: center;
+}
+
+table.processed-files {
+  margin-top: 200px;
+}
+

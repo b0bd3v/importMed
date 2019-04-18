@@ -48,6 +48,17 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'data.in' => [
+            'driver' => 'local',
+            'root' => storage_path('data/out'),
+        ],
+
+        'data.out' => [
+            'driver' => 'local',
+            'root' => storage_path('data/in'),
+            'visibility' => 'public',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
