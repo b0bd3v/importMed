@@ -22,7 +22,7 @@ class FileController extends Controller
         $nomeOriginal = pathinfo($request->file('file')->getClientOriginalName(), PATHINFO_FILENAME);
         $extensao = $request->file('file')->getClientOriginalExtension();
 
-        $novoFileName = sprintf("%s.done.dat", $nomeOriginal); 
+        $novoFileName = sprintf("%s.dat", $nomeOriginal);
         $path = $request->file('file')->storeAs('data.in', $novoFileName);
 
         if($path){

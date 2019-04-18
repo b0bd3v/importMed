@@ -26,7 +26,7 @@ Route::get('processed-data', [
 ]);
 
 Route::get('view-file/{name}', [
-    'as' => 'processed.data',
+    'as' => 'view-file',
     'uses' => 'FileController@viewFile'
 ]);
 

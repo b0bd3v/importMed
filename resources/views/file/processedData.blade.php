@@ -7,7 +7,7 @@
             @foreach($files as $file)
             <tr>
                 <td>{{ $file }}</td>
-                <td><a href="{{route('processed.data', ['name' => $file])}}" target="_blank">Abrir</a></td>
+                <td style="width: 10px"><a href="{{route('view-file', ['name' => $file])}}" target="_blank">Abrir</a></td>
             </tr>
             @endforeach
         </tbody>

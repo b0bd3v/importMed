@@ -43,11 +43,11 @@ class ProcessData extends Command
     public function handle()
     {
         $files = \Storage::files('data.in');
-        
+
         foreach ($files as $key => $file) {
             $contentFile = \Storage::get($file);
             echo "Processando arquivo: ". $file . "\n";
-            
+
             $newFileName = pathinfo($file, PATHINFO_FILENAME);
             $this->saveFile($this->processDataFile($contentFile), $newFileName . self::FILE_EXTENSION);
             dd();
@@ -70,7 +70,7 @@ class ProcessData extends Command
         $vendedorSomas = [];
         foreach ($contentLines as $key => $line) {
             $fieldsLine = explode(self::DATA_SEPARATOR, $line);
-            
+
             switch ($fieldsLine[0]) {
                 case '001':
                     $dataToReturn['quantidadeVendedor']++;
@@ -80,7 +80,7 @@ class ProcessData extends Command
                     break;
                 case '003':
                     $vendaMaisCara = $this->compareVendaValor($vendaMaisCara, $fieldsLine);
-                    
+
                     if(isset($vendedorSomas[$fieldsLine[3]])){
                         $vendedorSomas[$fieldsLine[3]] = $vendedorSomas[$fieldsLine[3]] + $this->getSomaVenda($fieldsLine);
                     } else {
@@ -93,7 +93,7 @@ class ProcessData extends Command
 
         $dataToReturn['piorVendedor'] = $this->getNomePior($vendedorSomas);
         $dataToReturn['idVendaMaisCara'] = $vendaMaisCara[1];
-        
+
         return $dataToReturn;
     }
 
@@ -124,8 +124,13 @@ class ProcessData extends Command
 
         \Storage::put(self::DISK_DATA_OUT . $fileName, $text);
 
-        $this->removeEntrada(self::DISK_DATA_OUT . $fileName, $text)
+        $this->removeEntrada(self::DISK_DATA_IN . $fileName, $text);
         return true;
+    }
+
+
+    private function removeEntrada($filePath){
+        \Storage::delete($filePath);
     }
 
 }
