@@ -15,4 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('file', 'FileController@store');
+Route::post('process', [
+    'as' => 'process',
+    'uses' => 'FileController@process'
+]);
