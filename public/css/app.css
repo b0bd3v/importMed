@@ -10667,7 +10667,6 @@ a.text-dark:focus {
   text-align: center;
 }
 
-table.processed-files {
+table.processed-files, .card {
   margin-top: 200px;
 }
-
