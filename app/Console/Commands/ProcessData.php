@@ -36,26 +36,27 @@ class ProcessData extends Command
     }
 
     /**
-     * Execute the console command.
+     * Executa o comando de terminal.
      *
      * @return mixed
      */
     public function handle()
     {
-        $files = \Storage::files('data.in');
+        $files = \Storage::files(self::DISK_DATA_IN);
 
         foreach ($files as $key => $file) {
             $contentFile = \Storage::get($file);
             echo "Processando arquivo: ". $file . "\n";
-
             $newFileName = pathinfo($file, PATHINFO_FILENAME);
-            $this->saveFile($this->processDataFile($contentFile), $newFileName . self::FILE_EXTENSION);
-            dd();
-
-
+            if($this->saveFile($this->processDataFile($contentFile), $newFileName . self::FILE_EXTENSION)){
+                $this->removeEntrada(self::DISK_DATA_IN . $newFileName . self::FILE_EXTENSION);
+            }            
         }
     }
 
+    /**
+     * Processa os dados obtidos nos arquivo de entrada.
+     */
     private function processDataFile($data){
         $contentLines = explode("\n", $data);
         $dataToReturn = [
@@ -98,6 +99,9 @@ class ProcessData extends Command
     }
 
 
+    /**
+     * Retorna a venda que tem maior valor.
+     */
     private function compareVendaValor($vendaMaisCara, $vendaAtual) {
         if(count($vendaMaisCara) > 0){
             return $this->getSomaVenda($vendaAtual) > $this->getSomaVenda($vendaMaisCara) ? $vendaAtual : $vendaMaisCara;
@@ -106,31 +110,51 @@ class ProcessData extends Command
         }
     }
 
-
+    /**
+     * Obtém a soma de todos os produtos levando em consideração a quatidade.
+     */
     private function getSomaVenda($venda) {
-        $produtos = explode('-', preg_replace('/\]*\[* */', '', $venda[2]));
-        return $produtos[1] * $produtos[2];
+        $vendas = explode(',', preg_replace('/\]*\[* */', '', $venda[2]));
+        $soma = 0;
+        foreach ($vendas as $key => $venda) {
+            $produto = explode('-', $venda);
+            $produto = array_filter($produto, function($info){ return trim($info); });
+            $soma = ($produto[1] * $produto[2]) + $soma;
+        }
+        return $soma;
     }
 
+    /**
+     * Obtém o nome do pior vendedor.
+     */
     private function getNomePior($data) {
         return array_search(max($data), $data);
     }
 
+    /**
+     * Armazena o arquivo com o resultado.
+     */
     private function saveFile($data, $fileName) {
+        \Storage::put(self::DISK_DATA_OUT . $fileName, $this->templateSaida($data));
+        return true;
+    }
+
+    /**
+     * Remove o arquivo de entrada.
+     */
+    private function removeEntrada($filePath){
+        \Storage::delete($filePath);
+    }
+
+    /**
+     * Monta a string que será salva no arquivo de saída.
+     */
+    private function templateSaida($data) {
         $text = "Quantidade de cliente: " . $data['quantidadeCliente'] . "\n";
         $text.= "Quantidade de vendedores: " . $data['quantidadeVendedor'] . "\n";
         $text.= "ID venda mais cara: " . $data['idVendaMaisCara'] . "\n";
         $text.= "Pior vendedor: " . $data['piorVendedor'] . "\n";
-
-        \Storage::put(self::DISK_DATA_OUT . $fileName, $text);
-
-        $this->removeEntrada(self::DISK_DATA_IN . $fileName, $text);
-        return true;
-    }
-
-
-    private function removeEntrada($filePath){
-        \Storage::delete($filePath);
+        return $text;
     }
 
 }
