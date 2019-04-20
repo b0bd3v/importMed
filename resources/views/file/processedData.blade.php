@@ -4,6 +4,14 @@
 <div class="container">
     <table class="table table-striped table-dark processed-files">
         <tbody>
+
+            @if (count($files) < 1)
+            <tr>
+                <td colspan="2">
+                    Não há arquivos processados.
+                </td>
+            </tr>        
+            @endif
             @foreach($files as $file)
             <tr>
                 <td>
@@ -15,6 +23,14 @@
             </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <td collspan="2" class="table-footer">
+                @if (count($files) > 0)
+                <a class="btn btn-danger" href="{{route('clean-files')}}"><i class="fa fa-trash"></i> Deletar arquivos processados</a>
+                @endif
+                <a href="{{url('/')}}">Voltar para o início</a>
+            </td>
+        </tfoot>
     </table>
 </div>
 @endsection('content')

@@ -69,4 +69,17 @@ class FileController extends Controller
             'Content-Disposition' => 'inline; filename="' . $name . self::FILE_EXTENSION . '"'
         ]);
     }
+
+    /**
+     * Limpa a pasta de arquivos processados.
+     */
+    public function cleanFiles() {
+    
+        $files = \Storage::files(self::DISK_DATA_OUT);
+        
+        foreach ($files as $key => $file) {
+            \Storage::delete($files);
+        }
+        return \Redirect::away('processed-data');
+    }
 }

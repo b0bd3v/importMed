@@ -31,4 +31,8 @@ Route::get('view-file/{name}', [
 ]);
 
 
+Route::get('clean-files', [
+    'as' => 'clean-files',
+    'uses' => 'FileController@cleanFiles'
+]);
 
