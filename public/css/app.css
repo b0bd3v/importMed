@@ -10670,3 +10670,10 @@ a.text-dark:focus {
 table.processed-files, .card {
   margin-top: 200px;
 }
+
+table.processed-files td{
+  vertical-align: middle;
+}
+table.processed-files td:first-child{
+  padding-left: 20px;
+}
