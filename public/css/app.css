@@ -10677,3 +10677,7 @@ table.processed-files td{
 table.processed-files td:first-child{
   padding-left: 20px;
 }
+
+div.succes-container{
+  text-align: center;
+}

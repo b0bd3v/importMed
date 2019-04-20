@@ -23,8 +23,12 @@ class FileController extends Controller
         $extensao = $request->file('file')->getClientOriginalExtension();
 
         $novoFileName = sprintf("%s.dat", $nomeOriginal);
-        $path = $request->file('file')->storeAs('data.in', $novoFileName);
+        $path = $request->file('file')->storeAs(self::DISK_DATA_IN, $novoFileName);
 
+        ob_start();        
+        $exit = \Artisan::call('expermed:process');
+        ob_get_clean();
+         
         if($path){
             return view('file.success');
         } else {
