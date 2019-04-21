@@ -135,7 +135,7 @@ class ProcessData extends Command
      * Armazena o arquivo com o resultado.
      */
     private function saveFile($data, $fileName) {
-        \Storage::put(self::DISK_DATA_OUT . $fileName, $this->templateSaida($data));
+        \Storage::put(self::DISK_DATA_OUT . $this->nomeSaidaDat($fileName), $this->templateSaida($data));
         return true;
     }
 
@@ -157,5 +157,14 @@ class ProcessData extends Command
         return $text;
     }
 
+    /**
+     * Retorna novo no do arquivo que será salvo no diretório de saída.
+     */
+    private function nomeSaidaDat($fileName) {
+        $nome = explode('.', $fileName);
+        $datExtension = end($nome);
+        $novoNome = $nome[0] . '.done.' . $datExtension; 
+        return $novoNome;
+    }
 }
 
